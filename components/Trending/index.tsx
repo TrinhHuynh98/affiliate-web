@@ -25,11 +25,6 @@ const index = () => {
   );
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    bookSnapShot?.docs.map((item) => {
-      console.log("item book", item.data);
-    });
-  }, [bookSnapShot]);
 
   return (
     <>

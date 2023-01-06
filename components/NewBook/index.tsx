@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, useState } from "react";
 import { addDoc, collection, query, where } from "firebase/firestore";
 import { db, storage } from "../../config/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
@@ -44,13 +44,15 @@ const CreateBook = () => {
   //   Upload image
   const uploadImage = (event: ChangeEvent<HTMLInputElement>) => {
     const { files } = event.target;
-    setImageUpload(files[0]);
-    const imageRef = ref(storage, `images/${files[0].name + uuidv4()}`);
-    uploadBytes(imageRef, files[0]).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
-        setImageUrl(url);
+    if (files !== null) {
+      setImageUpload(files[0]);
+      const imageRef = ref(storage, `images/${files[0].name + uuidv4()}`);
+      uploadBytes(imageRef, files[0]).then((snapshot) => {
+        getDownloadURL(snapshot.ref).then((url) => {
+          setImageUrl(url);
+        });
       });
-    });
+    }
   };
 
   const handleSaveNewBook = async () => {

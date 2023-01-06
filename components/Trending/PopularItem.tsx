@@ -7,7 +7,7 @@ import Link from "next/link";
 
 // interface IBook {
 interface Idata {
-  data: IBooks;
+  data: any;
 }
 const defaultIconSize = "1.875rem";
 

@@ -11,6 +11,7 @@ import { BsInstagram, BsFacebook, BsLinkedin } from "react-icons/bs";
 import { motion } from "framer-motion";
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const defaultIconSize = "1.875rem";
 
@@ -41,9 +42,9 @@ const Profile = () => {
         }}
       >
         <div className="flex flex-col items-center">
-          <img
-            src={loggedInuser?.photoURL}
-            alt={loggedInuser?.displayName}
+          <Image
+            src={loggedInuser?.photoURL as string}
+            alt={loggedInuser?.displayName as string}
             className="rounded-full mt-10 mb-10"
             width={200}
             height={200}
