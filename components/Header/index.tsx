@@ -43,8 +43,8 @@ const sidebarItems = [
   {
     id: 5,
     label: "Profile",
-    icon: VscAccount,
-    link: "profile",
+    icon: BsInstagram,
+    link: "/profile",
   },
 ];
 
@@ -111,6 +111,18 @@ const Header = () => {
               </div>
             );
           })}
+          {/* {isAdmin && (
+            <div
+              className="rounded-md bg-[#FFB26B] text-white hover:bg-orange-500 mt-2 px-3 py-2 center ml-3"
+              key={1}
+            >
+              <Link legacyBehavior href="/profile">
+                <a className="md:flex px-3 py-2 items-center w-full h-full text-[#181D31] hover:text-white ">
+                  <span>Profile</span>
+                </a>
+              </Link>
+            </div>
+          )} */}
           {loggedInuser ? (
             <button
               className="rounded-md bg-[#FFB26B] text-white hover:bg-orange-500 mt-2 px-3 py-2 center ml-3"

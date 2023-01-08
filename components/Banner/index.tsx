@@ -7,7 +7,7 @@ const defaultIconSize = "1.875rem";
 
 const socialMedia = [
   { icon: BsFacebook, link: "/" },
-  { icon: BsInstagram, link: "https://www.instagram.com/joslies98/" },
+  { icon: BsInstagram, link: "https://www.instagram.com/kayleighx98/" },
   { icon: BsLinkedin, link: "/" },
 ];
 

@@ -12,6 +12,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import Footer from "../Footer";
 import Link from "next/link";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 const defaultIconSize = "1.875rem";
 
@@ -100,6 +101,11 @@ const SideBar = () => {
   };
   const [isNavMenuMobileOpen, setIsNavMenuMobileOpen] = useState(false);
 
+  const [loggedInuser, loading, _error] = useAuthState(auth);
+  const isAdmin = loggedInuser?.email === "sos9889yo@gmail.com";
+
+  console.log("isAdmin", isAdmin);
+
   return (
     <div
       className={wrapperClasses}
@@ -141,19 +147,35 @@ const SideBar = () => {
               const classes = getNavItemClassese(menu);
               return (
                 <div className={classes} key={1}>
-                  <Link legacyBehavior href={menu?.link}>
-                    <a className="flex py-4 px-3 items-center w-full h-full">
-                      <div style={{ width: "2.5rm" }}>
-                        <Icon
-                          size={defaultIconSize}
-                          className="mr-4 fill-orange-500 hover:stroke-white"
-                        />
-                      </div>
-                      {!toggleCollage && (
-                        <span className="text-white">{menu.label}</span>
-                      )}
-                    </a>
-                  </Link>
+                  {isAdmin ? (
+                    <Link legacyBehavior href={menu?.link}>
+                      <a className="flex py-4 px-3 items-center w-full h-full">
+                        <div style={{ width: "2.5rm" }}>
+                          <Icon
+                            size={defaultIconSize}
+                            className="mr-4 fill-orange-500 hover:stroke-white"
+                          />
+                        </div>
+                        {!toggleCollage && (
+                          <span className="text-white">{menu.label}</span>
+                        )}
+                      </a>
+                    </Link>
+                  ) : (
+                    <Link legacyBehavior href="/home">
+                      <a className="flex py-4 px-3 items-center w-full h-full">
+                        <div style={{ width: "2.5rm" }}>
+                          <Icon
+                            size={defaultIconSize}
+                            className="mr-4 fill-orange-500 hover:stroke-white"
+                          />
+                        </div>
+                        {!toggleCollage && (
+                          <span className="text-white">{menu.label}</span>
+                        )}
+                      </a>
+                    </Link>
+                  )}
                 </div>
               );
             })}
