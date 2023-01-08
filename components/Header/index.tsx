@@ -11,6 +11,7 @@ import classNames from "classnames";
 import { signOut } from "firebase/auth";
 import { auth } from "../../config/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useNavigate } from "react-router-dom";
 
 const defaultIconSize = "1.875rem";
 
@@ -110,12 +111,21 @@ const Header = () => {
               </div>
             );
           })}
-          {loggedInuser && (
+          {loggedInuser ? (
             <button
               className="rounded-md bg-[#FFB26B] text-white hover:bg-orange-500 mt-2 px-3 py-2 center ml-3"
               onClick={logout}
             >
               Logout
+            </button>
+          ) : (
+            <button
+              className="rounded-md bg-[#FFB26B] text-white hover:bg-orange-500 mt-2 px-3 py-2 center ml-3"
+              // onClick={directToLogin}
+            >
+              <Link href="/login" passHref>
+                Login
+              </Link>
             </button>
           )}
         </nav>

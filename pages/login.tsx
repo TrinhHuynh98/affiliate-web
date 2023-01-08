@@ -1,20 +1,25 @@
 import React from "react";
-import { useSignInWithGoogle } from "react-firebase-hooks/auth";
+import { useAuthState, useSignInWithGoogle } from "react-firebase-hooks/auth";
 import { auth } from "../config/firebase";
+import HomePage from "./home";
 
 const Login = () => {
   const [signInWithGoogle, _user, _loading, _error] = useSignInWithGoogle(auth);
+  const [loggedInuser] = useAuthState(auth);
   const signIn = () => {
     signInWithGoogle();
   };
-  console.log("_user", _user);
+
+  if (loggedInuser) {
+    return <HomePage />;
+  }
   return (
     <div className="flex flex-col justify-center items-center bg-black h-screen">
       <button
-        className="bg-[#18D860] text-white p-5 rounded-full"
+        className="bg-orange-600 text-white p-5 rounded-full"
         onClick={signIn}
       >
-        Login
+        Login with google account
       </button>
     </div>
   );

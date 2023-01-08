@@ -23,28 +23,28 @@ const sidebarItems = [
     link: "/home",
   },
   {
+    id: 5,
+    label: "Dashboard",
+    icon: BiBookAlt,
+    link: "/profile",
+  },
+  {
     id: 2,
     label: "Books",
     icon: BiBookAlt,
-    link: "books",
+    link: "/books",
   },
   {
     id: 3,
-    label: "Themes",
+    label: "Project",
     icon: BiStore,
-    link: "/theme",
+    link: "/projects",
   },
   {
     id: 4,
-    label: "Connect",
-    icon: BsInstagram,
-    link: "/connect",
-  },
-  {
-    id: 5,
-    label: "Profile",
+    label: "Blogs",
     icon: VscAccount,
-    link: "/profile",
+    link: "/blog",
   },
 ];
 
@@ -68,7 +68,7 @@ const SideBar = () => {
     }
   );
   const collapesIconClasses = classNames(
-    "p-4 rounded-full bg-cyan-500 absolute right-0",
+    "p-4 rounded-full bg-orange-500 absolute right-0",
     {
       "rotate-180": toggleCollage,
     }
@@ -89,9 +89,9 @@ const SideBar = () => {
 
   const getNavItemClassese = (menu: any) => {
     return classNames(
-      `flex items-center cursor-pointer hover:bg-cyan-200 mt-2 rounded-full w-full overflow-hidden whitespace-nowrap`,
+      `flex items-center cursor-pointer hover:bg-orange-600 mt-2 rounded-full w-full overflow-hidden whitespace-nowrap`,
       {
-        ["bg-cyan-200"]: activeMenu?.id === menu.id,
+        ["bg-orange-600"]: activeMenu?.id === menu.id,
       },
       {
         ["rounded"]: toggleCollage,
@@ -110,7 +110,7 @@ const SideBar = () => {
         <div className="flex items-center justify-between relative">
           <div className="flex items-center pl-1 gap-4 animate-bounce">
             {/* <Logo /> */}
-            <GiFallingStar className="fill-cyan-500 w-10 h-10" />
+            <GiFallingStar className="fill-orange-500 w-10 h-10" />
             <span
               className={classNames("text-xl font-medium text-white", {
                 hidden: toggleCollage,
@@ -130,7 +130,7 @@ const SideBar = () => {
               onClick={handleSideBarToggle}
             >
               {" "}
-              <CollapsIcon className="stroke-cyan-200" />
+              <CollapsIcon className="stroke-orange-600" />
             </button>
           )}
         </div>
@@ -146,7 +146,7 @@ const SideBar = () => {
                       <div style={{ width: "2.5rm" }}>
                         <Icon
                           size={defaultIconSize}
-                          className="mr-4 fill-cyan-500 hover:stroke-cyan-800"
+                          className="mr-4 fill-orange-500 hover:stroke-white"
                         />
                       </div>
                       {!toggleCollage && (
@@ -157,23 +157,6 @@ const SideBar = () => {
                 </div>
               );
             })}
-          </div>
-          <div className={`${getNavItemClassese({})}  px-3 py-4`}>
-            <div style={{ width: "2.5rem" }}>
-              <FiLogOut
-                size={defaultIconSize}
-                onClick={logout}
-                className="stroke-cyan-500 hover:stroke-cyan-800"
-              />
-            </div>
-            {!toggleCollage && (
-              <span
-                className={classNames("text-xl text-white ")}
-                onClick={logout}
-              >
-                Logout
-              </span>
-            )}
           </div>
         </div>
       </div>

@@ -13,15 +13,22 @@ const Loading = () => {
       {loading ? (
         <h2 className="text-cyan-300 animate-bounce">Wait a little bit!</h2>
       ) : (
-        <Link legacyBehavior href="/home">
-          <a>
-            <button
-              className={`mt-10 bg-teal-600 p-4 text-white rounded-full hover:bg-teal-900 hover:shadow-xl hover: scale-110 duration-300 `}
-            >
-              Come Home
-            </button>
-          </a>
-        </Link>
+        <>
+          <Link legacyBehavior href="/home">
+            <a>
+              <button
+                className={`mt-10 bg-orange-600 p-4 text-white rounded-full hover:bg-orange-900 hover:shadow-xl hover: scale-110 duration-300 `}
+              >
+                Wellcome
+              </button>
+            </a>
+          </Link>
+          {/* <div className="mt-3 text-orange-600 animate-pulse">
+            <a href="/login" target="_blank" rel="noreferrer">
+              Admin login
+            </a>
+          </div> */}
+        </>
       )}
       {/* <button
         className={`mt-10 bg-teal-600 p-4 text-white rounded-full hover:bg-teal-900 hover:shadow-xl hover: scale-110 duration-300 `}

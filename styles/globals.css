@@ -48,7 +48,7 @@
     @apply mb-5 block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500;
   }
   .btn-dialog-ok {
-    @apply px-4 py-2 bg-green-500 text-white text-base rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300;
+    @apply px-4 py-2 bg-orange-500 text-white text-base rounded-md w-full shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-300;
   }
   .btn-dialog-cancel {
     @apply mr-4 px-4 py-2 bg-gray-700 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-500;

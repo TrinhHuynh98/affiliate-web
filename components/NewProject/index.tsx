@@ -9,7 +9,7 @@ import {
 } from "firebase/firestore";
 import { db, storage } from "../../config/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
-import { IBooks } from "../../type";
+import { IProject } from "../../type";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 as uuidv4 } from "uuid";
 
@@ -21,30 +21,45 @@ interface IImage {
   type: string;
 }
 
-const CreateBook = () => {
+const NewProject = () => {
   const [openDialogCreateBook, setOpenDialogCreateBook] = useState(false);
-  const [bookName, setBookName] = useState("");
-  const [bookLink, setBookLink] = useState("");
-  const [bookDes, setBookDes] = useState("");
-  const [bookAuthor, setBookAuthor] = useState("");
+  // const [bookName, setBookName] = useState("");
+  // const [bookLink, setBookLink] = useState("");
+  // const [bookDes, setBookDes] = useState("");
+  // const [bookAuthor, setBookAuthor] = useState("");
   const [imageUpload, setImageUpload] = useState<IImage>();
   const [imageUrl, setImageUrl] = useState("");
 
+  const current = new Date();
+  const date = `${current.getDate()}/${
+    current.getMonth() + 1
+  }/${current.getFullYear()}`;
+
+  const [value, setvalue] = useState({
+    title: "",
+    createAt: date,
+    link: "",
+    source: "",
+    des: "",
+    image: "",
+    id: "",
+  });
+
   const [id, setId] = useState(uuidv4());
 
-  const isInvalidField = !bookName && !bookLink && !bookDes && !bookAuthor;
+  // const isInvalidField = !value.title && !value.createAt && !value. && !bookAuthor;
 
-  const queryBookDataCurrentUser = query(
-    collection(db, "books")
+  const queryProjectDataCurrentUser = query(
+    collection(db, "projects")
     // where("name", "array-contains", bookName)
   );
-  const [bookSnapShot, __loading, __error] = useCollection(
-    queryBookDataCurrentUser
+  const [projectSnapShot, __loading, __error] = useCollection(
+    queryProjectDataCurrentUser
   );
 
-  const isBookExistDB = (bookName: string) => {
-    return bookSnapShot?.docs.find(
-      (book: any) => (book.data() as IBooks).name === bookName
+  const isBookExistDB = (projectTitle: string) => {
+    return projectSnapShot?.docs.find(
+      (book: any) => (book.data() as IProject).title === projectTitle
     );
   };
 
@@ -60,40 +75,45 @@ const CreateBook = () => {
       const imageRef = ref(storage, `images/${files[0].name + uuidv4()}`);
       uploadBytes(imageRef, files[0]).then((snapshot) => {
         getDownloadURL(snapshot.ref).then((url) => {
-          setImageUrl(url);
+          // setImageUrl(url);
+          setvalue({ ...value, image: url });
         });
       });
     }
   };
-
-  console.log("uuidv4() 1 ", uuidv4());
-  console.log("uuidv4() 2 ", uuidv4());
-
-  const handleSaveNewBook = async () => {
-    if (isBookExistDB(bookName)) {
+  console.log("projectid", id);
+  const handleSaveNewProject = async () => {
+    if (isBookExistDB(value.title)) {
       setIsExistBook(true);
     }
     // setId(uuidv4());
-    if (!isInvalidField && !isBookExistDB(bookName)) {
+    if (!isBookExistDB(value.title)) {
       const dataRequest = {
         id: id,
-        name: bookName,
-        link: bookLink,
-        description: bookDes,
-        author: bookAuthor,
-        images: imageUrl,
+        title: value.title,
+        link: value.link,
+        des: value.des,
+        createAt: date,
+        images: value.image,
+        source: value.source,
       };
-      const collectionById = doc(db, "books", id);
+      console.log("dataRequest", dataRequest);
+      const collectionById = doc(db, "projects", id);
       await setDoc(collectionById, dataRequest, { merge: true });
       handleClose();
     }
   };
 
   const resetField = () => {
-    setBookDes("");
-    setBookLink("");
-    setBookName("");
-    setBookAuthor("");
+    setvalue({
+      title: "",
+      createAt: "",
+      link: "",
+      source: "",
+      des: "",
+      image: "",
+      id: "",
+    });
   };
   const handleClose = () => {
     setOpenDialogCreateBook(false);
@@ -109,7 +129,7 @@ const CreateBook = () => {
         className="rounded-lg bg-orange-400 text-white p-2 cursor-pointer uppercase"
         onClick={handleOpen}
       >
-        Create new book
+        Create new project
       </button>
 
       <div
@@ -120,70 +140,73 @@ const CreateBook = () => {
       >
         <div className="relative top-20 mx-auto p-5 w-96 md:w-2/4 shadow-sm shadow-white rounded-md bg-white ">
           <div className="mt-3 text-center">
-            <h3>Create New Book</h3>
+            <h3>Create New Project</h3>
             <div className="mt-2 px-7 py-3">
               {isExistBook && (
                 <p className="text-red-600">
-                  Books already create. Try create another one!
+                  Project already create. Try create another one!
                 </p>
               )}
               <label>
-                <h5 className="text-left">Book name:</h5>
+                <h5 className="text-left">Title:</h5>
               </label>
               <input
                 type="text"
                 id="book-name"
                 name="book name"
                 className="input"
-                value={bookName}
-                onChange={(e) => setBookName(e.target.value)}
+                value={value.title}
+                onChange={(e) => setvalue({ ...value, title: e.target.value })}
               />
 
               <label>
-                <h5 className="text-left">Author:</h5>
-              </label>
-              <input
-                type="text"
-                id="book-name"
-                name="book name"
-                className="input"
-                value={bookAuthor}
-                onChange={(e) => setBookAuthor(e.target.value)}
-              />
-
-              <label>
-                <h5 className="text-left">Link by book:</h5>
+                <h5 className="text-left">Demo:</h5>
               </label>
               <input
                 type="text"
                 id="book-link"
                 name="book link"
                 className="input"
-                value={bookLink}
-                onChange={(e) => setBookLink(e.target.value)}
+                value={value.link}
+                onChange={(e) => setvalue({ ...value, link: e.target.value })}
+                // onChange={(e) => setDemo(e.target.value)}
               />
 
               <label>
-                <h5 className="text-left">Book image:</h5>
+                <h5 className="text-left">Source:</h5>
+              </label>
+              <input
+                type="text"
+                id="book-link"
+                name="book link"
+                className="input"
+                value={value.source}
+                onChange={(e) => setvalue({ ...value, source: e.target.value })}
+                // onChange={(e) => setSource(e.target.value)}
+              />
+
+              <label>
+                <h5 className="text-left">Project image:</h5>
               </label>
               <input
                 type="file"
-                id="book-image"
-                name="book image"
+                id="project-image"
+                name="project image"
                 className="input"
                 onChange={(e) => uploadImage(e)}
               />
 
               <label>
-                <h5 className="text-left">Book description:</h5>
+                <h5 className="text-left">Project description:</h5>
               </label>
               <textarea
                 id="book-name"
                 name="book name"
                 rows={4}
                 className="input-area"
-                value={bookDes}
-                onChange={(e) => setBookDes(e.target.value)}
+                value={value.des}
+                // onChange={(e) => setDes(e.target.value)}
+                onChange={(e) => setvalue({ ...value, des: e.target.value })}
               />
             </div>
             <div className="flex flex-cols justify-between items-center px-4 py-3">
@@ -194,23 +217,14 @@ const CreateBook = () => {
               >
                 Cancel
               </button>
-              {isInvalidField ? (
-                <>
-                  <button className="btn-disable" disabled>
-                    Save
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    id="ok-btn"
-                    className="btn-dialog-ok"
-                    onClick={handleSaveNewBook}
-                  >
-                    Save
-                  </button>
-                </>
-              )}
+
+              <button
+                id="ok-btn"
+                className="btn-dialog-ok"
+                onClick={handleSaveNewProject}
+              >
+                Save
+              </button>
             </div>
           </div>
         </div>
@@ -219,4 +233,4 @@ const CreateBook = () => {
   );
 };
 
-export default CreateBook;
+export default NewProject;

@@ -1,12 +1,5 @@
 import React, { ChangeEvent, useState } from "react";
-import {
-  addDoc,
-  collection,
-  doc,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
+import { addDoc, collection, query, where } from "firebase/firestore";
 import { db, storage } from "../../config/firebase";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { IBooks } from "../../type";
@@ -21,7 +14,13 @@ interface IImage {
   type: string;
 }
 
-const CreateBook = () => {
+interface IDataDetail {
+  dataDetail: any;
+  open: boolean;
+}
+
+const EditBook: React.FC<IDataDetail> = (props) => {
+  const { dataDetail, open } = props;
   const [openDialogCreateBook, setOpenDialogCreateBook] = useState(false);
   const [bookName, setBookName] = useState("");
   const [bookLink, setBookLink] = useState("");
@@ -30,7 +29,7 @@ const CreateBook = () => {
   const [imageUpload, setImageUpload] = useState<IImage>();
   const [imageUrl, setImageUrl] = useState("");
 
-  const [id, setId] = useState(uuidv4());
+  console.log("dataDetail at edit", dataDetail);
 
   const isInvalidField = !bookName && !bookLink && !bookDes && !bookAuthor;
 
@@ -66,25 +65,20 @@ const CreateBook = () => {
     }
   };
 
-  console.log("uuidv4() 1 ", uuidv4());
-  console.log("uuidv4() 2 ", uuidv4());
-
   const handleSaveNewBook = async () => {
     if (isBookExistDB(bookName)) {
       setIsExistBook(true);
     }
-    // setId(uuidv4());
     if (!isInvalidField && !isBookExistDB(bookName)) {
       const dataRequest = {
-        id: id,
+        id: uuidv4(),
         name: bookName,
         link: bookLink,
         description: bookDes,
         author: bookAuthor,
         images: imageUrl,
       };
-      const collectionById = doc(db, "books", id);
-      await setDoc(collectionById, dataRequest, { merge: true });
+      await addDoc(collection(db, "books"), dataRequest);
       handleClose();
     }
   };
@@ -102,15 +96,15 @@ const CreateBook = () => {
   const handleOpen = () => {
     setOpenDialogCreateBook(true);
   };
-
+  console.log("open at edit book", open);
   return (
     <div>
-      <button
+      {/* <button
         className="rounded-lg bg-orange-400 text-white p-2 cursor-pointer uppercase"
         onClick={handleOpen}
       >
         Create new book
-      </button>
+      </button> */}
 
       <div
         className={`fixed ${
@@ -120,7 +114,7 @@ const CreateBook = () => {
       >
         <div className="relative top-20 mx-auto p-5 w-96 md:w-2/4 shadow-sm shadow-white rounded-md bg-white ">
           <div className="mt-3 text-center">
-            <h3>Create New Book</h3>
+            <h3>Update Book</h3>
             <div className="mt-2 px-7 py-3">
               {isExistBook && (
                 <p className="text-red-600">
@@ -219,4 +213,4 @@ const CreateBook = () => {
   );
 };
 
-export default CreateBook;
+export default EditBook;
